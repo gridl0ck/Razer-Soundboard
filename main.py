@@ -50,11 +50,24 @@ buttons = {}
 ## save_sounds saves all the sound locations to the disk in a txt file (saved_so they can be referenced
 ## at next launch if theyre configured.
 def save_sounds():
-    pass
+    f = open(os.path.join(os.getcwd(), "saved-sounds.txt"), "w")
+
+    for key in sounds:
+        f.write(f"{sounds[key]}\n")
+    f.close()
+
 
 ## load_sounds looks for the saved_sounds.txt file and loads those paths into their respective variables.
 def load_sounds():
-    pass
+    f = open(os.path.join(os.getcwd(), "saved-sounds.txt"), "r")
+    lines = f.readlines()
+    start = 96
+    for line in lines:
+        if line == "\n":
+            pass
+        else:
+            sounds[start] = line.rstrip()
+            start += 1
 
 ## Plays the sound associatec with the key pressed.
 ## Launching the playsound function in a thread allows the sounds to be played immediately, and doesnt block the program.
@@ -130,8 +143,6 @@ def setup_labels():
         labels[f"lbl{i}"].grid(column=0, row=i)
 
 
-
-
 def setup_buttons():
     global window, buttons, labels
     for i in range(0,10):
@@ -140,7 +151,8 @@ def setup_buttons():
 
 def main():
     global kb, window
-
+    if os.path.exists(os.path.join(os.getcwd(), "saved-sounds.txt")):
+        load_sounds()
     # Starts the listener before the GUI is initialized because if the the window main-loop is a blocking function
     kb = Listener(on_press=key_press, on_release=key_release)
     kb.start()
@@ -149,3 +161,4 @@ def main():
     window.mainloop()
 
 main()
+save_sounds()
