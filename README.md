@@ -9,3 +9,6 @@ To use this program, simply run the main.py in a terminal, or set a Razer Hypers
 ### **\*It is highly recommended to compile the program for your system using `pyinstaller -F main.py` in the project main directory.\***
 
 To close the program, either close the window or press the `DEL` or `.` key to the right of the `0` numpad key.
+
+## TODO
+- Improve GUI
