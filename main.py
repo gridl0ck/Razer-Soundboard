@@ -100,15 +100,16 @@ def clicked(btn, label):
     fn = None
     while not fileSelected:
         fn = askopenfilename()
-        print(fn)
         extension = fn.split(".")[-1].lower()
-
-        if extension not in valid_file_extentions:
-            err_popup("Invalid File Type", "Please select a standard audio file!")
-        else:
+        if not fn:
             fileSelected = True
-    sounds[sound_keys[f"snd{btn}"]] = fn
-    label.configure(text=f"Current Sound for Key {btn}: {fn}")
+        else:
+            if extension not in valid_file_extentions:
+                err_popup("Invalid File Type", "Please select a standard audio file!")
+            else:
+                fileSelected = True
+                sounds[sound_keys[f"snd{btn}"]] = fn
+                label.configure(text=f"Current Sound for Key {btn}: {fn}")
 
 ## Sets up the gui to be able to configure and view the current sounds
 def setup_window():
