@@ -30,6 +30,8 @@ sounds = {
     105: None
 }
 
+## This dictionary maps the internally recognized sound numbers to their virtual key values
+## This makes iterating through the other dictionary to assign the sounds easier.
 sound_keys = {
     "snd0" : 96,
     "snd1" : 97,
