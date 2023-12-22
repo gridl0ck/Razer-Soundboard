@@ -8,7 +8,7 @@ from functools import partial
 
 # Global Variables
 ## Variables housing the sounds.
-## TODO Change this to a dictionary
+## TODO Change this to a dictionary - Done on 21OCT2023
 
 ## Main window variable
 window = Tk()
