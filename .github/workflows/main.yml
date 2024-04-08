@@ -3,6 +3,13 @@ name: Deploy Key Test
 on: 
   workflow_dispatch:
 
+permissions:
+  deployments: write
+  contents: write
+  statuses: write
+  actions: write
+  checks: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -12,22 +19,34 @@ jobs:
       uses: actions/checkout@v4
       with:
         ref: branch1
+        
     - name: install ssh key
       run: |
         install -m 600 -D /dev/null ~/.ssh/id_rsa
         echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
         ssh-keyscan -H www.landl0ck3d.tk >> ~/.ssh/known_hosts
-    # - name: Set up SSH
-    #   uses: webfactory/ssh-agent@v0.9.0
-    #   with:
-    #     ssh-private-key: ${{ secrets.DEPLOY_KEY }}
 
-    # - name: Update known_hosts
-    #   run: 
+    - name: Fetch all branches
+      run: git fetch --all
+
+    - name: List and merge branches
+      run: |
+        git config --global user.name "github-actions[bot]"
+        branches=$(git branch -r --list "origin/branch*" | cut -d '/' -f 2)
+        branches=$(echo $branches | tr ' ' '\n') # Convert space-separated list to newline-separated
+        echo "Branches to merge: $branches"
+        git checkout staging
+        for branch in $branches; do
+          git merge --allow-unrelated-histories "origin/$branch"
+        done
+
+    - name: Push changes to server
+      run: |
+        git push origin staging
 
     - name: Connect and Pull
       run: |
-        ssh gridl0ck@www.landl0ck3d.tk -i ~/.ssh/id_rsa "cd /home/gridl0ck/test-github && git checkout branch1 && git pull && exit"
+        ssh gridl0ck@www.landl0ck3d.tk -i ~/.ssh/id_rsa "cd /home/gridl0ck/test-github && git checkout staging && git fetch origin"
 
     - name: cleanup
       run: rm -rf ~/.ssh
