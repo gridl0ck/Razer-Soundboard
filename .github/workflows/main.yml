@@ -12,15 +12,22 @@ jobs:
       uses: actions/checkout@v4
       with:
         ref: branch1
-        
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.9.0
-      with:
-        ssh-private-key: ${{ secrets.DEPLOY_KEY }}
-
-    - name: Update known_hosts
-      run: ssh-keyscan -H www.landl0ck3d.tk >> ~/.ssh/known_hosts
-
-    - name: Deploy
+    - name: install ssh key
       run: |
-        ssh gridl0ck@www.landl0ck3d.tk 'wall "testing connection..."'
+        install -m 600 -D /dev/null ~/.ssh/id_rsa
+        echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
+        ssh-keyscan -H www.landl0ck3d.tk >> ~/.ssh/known_hosts
+    # - name: Set up SSH
+    #   uses: webfactory/ssh-agent@v0.9.0
+    #   with:
+    #     ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+
+    # - name: Update known_hosts
+    #   run: 
+
+    - name: Connect and Pull
+      run: |
+        ssh gridl0ck@www.landl0ck3d.tk "cd /home/gridl0ck/test-github && git checkout branch1 && git pull && exit"
+
+    - name: cleanup
+      run: rm -rf ~/.ssh
