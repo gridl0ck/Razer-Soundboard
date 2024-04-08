@@ -21,13 +21,6 @@ jobs:
     - name: Update known_hosts
       run: ssh-keyscan -H www.landl0ck3d.tk >> ~/.ssh/known_hosts
 
-    - name: Check if Repository is Cloned
-      run: test -d "/home/gridl0ck/test-github/.git"
-
-    - name: Clone Repository and Checkout branch1
-      if: steps.check_repo.outputs.status != 'success'
-      run: git clone -b branch1 git@github.com:gridl0ck/Razer-Soundboard.git /home/gridl0ck/test-github
-
     - name: Deploy
       run: |
         ssh gridl0ck@www.landl0ck3d.tk 'cd /home/gridl0ck/test-github && git pull'
