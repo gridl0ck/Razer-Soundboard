@@ -4,8 +4,11 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
+  deployments: write
+  contents: write
+  statuses: write
+  actions: write
+  checks: read
 
 jobs:
   deploy:
@@ -32,23 +35,21 @@ jobs:
         branches=$(echo $branches | tr ' ' '\n') # Convert space-separated list to newline-separated
         echo "Branches to merge: $branches"
 
-    # - name: Merge Branches
-    #   run: |
-    #     git checkout staging
-    #     for branch in $branches; do
-    #       git merge "origin/$branch"
-    #     done
+    - name: Merge Branches
+      run: |
+        git checkout staging
+        for branch in $branches; do
+          git merge "origin/$branch"
+        done
 
-    # - name: Push changes to server
-    #   run: |
-    #     git push origin staging
+    - name: Push changes to server
+      run: |
+        git push origin staging
 
 
     - name: Connect and Pull
       run: |
-        ssh gridl0ck@www.landl0ck3d.tk -i ~/.ssh/id_rsa 'cd /home/gridl0ck/test-github && git checkout staging && git fetch origin'
-        ssh gridl0ck@www.landl0ck3d.tk -i ~/.ssh/id_rsa 'cd /home/gridl0ck/test-github && for branch in $(git branch -r --list "origin/branch*" | cut -d "/" -f 2); do git merge "origin/$branch"; done'
-        ssh gridl0ck@www.landl0ck3d.tk -i ~/.ssh/id_rsa "cd /home/gridl0ck/test-github && git push origin staging"
+        ssh gridl0ck@www.landl0ck3d.tk -i ~/.ssh/id_rsa "cd /home/gridl0ck/test-github && git pull"
 
     - name: cleanup
       run: rm -rf ~/.ssh
