@@ -20,7 +20,7 @@ jobs:
 
     - name: List branches
       run: |
-        branches=$(git branch -r --list "origin/your-prefix-*" | cut -d '/' -f 2)
+        branches=$(git branch -r --list "origin/branch*" | cut -d '/' -f 2)
         branches=$(echo $branches | tr ' ' '\n') # Convert space-separated list to newline-separated
         echo "Branches to merge: $branches"
 
