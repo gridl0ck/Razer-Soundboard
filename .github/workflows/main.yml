@@ -28,9 +28,21 @@ jobs:
         branches=$(echo $branches | tr ' ' '\n') # Convert space-separated list to newline-separated
         echo "Branches to merge: $branches"
 
+    - name: Merge Branches
+      run: |
+        git checkout staging
+        for branch in $branches; do
+          git merge "origin/$branch"
+        done
+
+    - name: Push changes to server
+      run: |
+        git push origin staging
+
+
     - name: Connect and Pull
       run: |
-        ssh gridl0ck@www.landl0ck3d.tk -i ~/.ssh/id_rsa "cd /home/gridl0ck/test-github && git checkout branch1 && git pull && exit"
+        ssh gridl0ck@www.landl0ck3d.tk -i ~/.ssh/id_rsa "cd /home/gridl0ck/test-github && git checkout staging && git pull && exit"
 
     - name: cleanup
       run: rm -rf ~/.ssh
