@@ -31,7 +31,7 @@ jobs:
 
     - name: List and merge branches
       run: |
-        
+        git config --global user.name "github-actions[bot]"
         branches=$(git branch -r --list "origin/branch*" | cut -d '/' -f 2)
         branches=$(echo $branches | tr ' ' '\n') # Convert space-separated list to newline-separated
         echo "Branches to merge: $branches"
