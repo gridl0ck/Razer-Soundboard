@@ -17,13 +17,12 @@ jobs:
         install -m 600 -D /dev/null ~/.ssh/id_rsa
         echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
         ssh-keyscan -H www.landl0ck3d.tk >> ~/.ssh/known_hosts
-    # - name: Set up SSH
-    #   uses: webfactory/ssh-agent@v0.9.0
-    #   with:
-    #     ssh-private-key: ${{ secrets.DEPLOY_KEY }}
 
-    # - name: Update known_hosts
-    #   run: 
+    - name: List branches
+      run: |
+        branches=$(git branch -r --list "origin/your-prefix-*" | cut -d '/' -f 2)
+        branches=$(echo $branches | tr ' ' '\n') # Convert space-separated list to newline-separated
+        echo "Branches to merge: $branches"
 
     - name: Connect and Pull
       run: |
