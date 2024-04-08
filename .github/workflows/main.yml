@@ -37,7 +37,7 @@ jobs:
         echo "Branches to merge: $branches"
         git checkout staging
         for branch in $branches; do
-          git merge "origin/$branch"
+          git merge --allow-unrelated-histories "origin/$branch"
         done
 
     - name: Push changes to server
