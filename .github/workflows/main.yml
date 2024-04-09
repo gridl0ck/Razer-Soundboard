@@ -41,9 +41,9 @@ jobs:
           git merge --allow-unrelated-histories "origin/$branch"
         done
         pwd
-        cd ../
-        pwd
+        echo ""
         ls
+        
 
     - name: Push changes to server
       run: |
