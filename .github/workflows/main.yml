@@ -31,6 +31,9 @@ jobs:
 
     - name: List and merge branches
       run: |
+        pwd
+        cd ../
+        pwd
         git config --global user.name "github-actions[bot]"
         git config --global user.email "githubbot@github.com"
         branches=$(git branch -r --list "origin/branch*" | cut -d '/' -f 2)
